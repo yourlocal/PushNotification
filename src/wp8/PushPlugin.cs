@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -75,6 +75,18 @@ namespace WPCordovaClassLib.Cordova.Commands
             {
                 this.DispatchCommandResult(new PluginResult(PluginResult.Status.ERROR, MissingChannelError));
             }
+        }
+
+        public void isRegistered(string options)
+        {
+            Options isRegisteredOptions;
+            if (!TryDeserializeOptions(options, out isRegisteredOptions))
+            {
+                this.DispatchCommandResult(new PluginResult(PluginResult.Status.JSON_EXCEPTION));
+                return;
+            }
+            var pushChannel = HttpNotificationChannel.Find(isRegisteredOptions.ChannelName);
+            this.DispatchCommandResult(new PluginResult(PluginResult.Status.OK, pushChannel != null));
         }
 
         public void showToastNotification(string options)

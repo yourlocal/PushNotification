@@ -37,7 +37,7 @@ PushNotification.prototype.unregister = function(successCallback, errorCallback,
 };
 
 // Check to see if we've already registered
-PushNotification.prototype.isRegistered = function(successCallback, errorCallback) {
+PushNotification.prototype.isRegistered = function(successCallback, errorCallback, options) {
     if (errorCallback == null) { errorCallback = function() {}}
 
     if (typeof errorCallback != "function")  {
@@ -50,7 +50,7 @@ PushNotification.prototype.isRegistered = function(successCallback, errorCallbac
         return
     }
 
-    cordova.exec(successCallback, errorCallback, "PushPlugin", "isRegistered", []);
+    cordova.exec(successCallback, errorCallback, "PushPlugin", "isRegistered", [options]);
 };
 
 // Call this if you want to show toast notification on WP8
