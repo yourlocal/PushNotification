@@ -24,6 +24,7 @@ public class PushPlugin extends CordovaPlugin {
 
 	public static final String REGISTER = "register";
 	public static final String UNREGISTER = "unregister";
+	public static final String IS_REGISTERED = "isRegistered";
 	public static final String EXIT = "exit";
 
 	private static CordovaWebView gWebView;
@@ -77,7 +78,15 @@ public class PushPlugin extends CordovaPlugin {
 				gCachedExtras = null;
 			}
 
-		} else if (UNREGISTER.equals(action)) {
+		} else if (IS_REGISTERED.equals(action)) {
+
+      Log.v(TAG, "IS_REGISTERED");
+      final boolean registered = GCMRegistrar.isRegistered(getApplicationContext());
+      Log.d(TAG, "isRegistered? " + registered);
+      callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, registered));
+      result = true;
+
+    } else if (UNREGISTER.equals(action)) {
 
 			GCMRegistrar.unregister(getApplicationContext());
 

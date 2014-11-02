@@ -43,6 +43,20 @@
     [self successWithMessage:@"unregistered"];
 }
 
+- (void)isRegistered:(CDVInvokedUrlCommand*)command;
+{
+  self.callbackId = command.callbackId;
+  BOOL registered;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    registered = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
+#else
+    UIRemoteNotificationType types = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+    registered = types != UIRemoteNotificationTypeNone;
+#endif
+    CDVPluginResult *commandResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:registered];
+    [self.commandDelegate sendPluginResult:commandResult callbackId:self.callbackId];
+}
+
 - (void)register:(CDVInvokedUrlCommand*)command;
 {
 	self.callbackId = command.callbackId;
