@@ -1,10 +1,5 @@
 package com.plugin.gcm;
 
-import java.util.Random;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -14,8 +9,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-
 import com.google.android.gcm.GCMBaseIntentService;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Random;
 
 @SuppressLint("NewApi")
 public class GCMIntentService extends GCMBaseIntentService {
@@ -84,10 +82,8 @@ public class GCMIntentService extends GCMBaseIntentService {
   public void createNotification(Context context, Bundle extras)
   {
     int notId = 0;
-
     try {
-      Random rand = new Random();
-      notId = Integer.parseInt(extras.getString("notId", "" + rand.nextInt(100000)));
+      notId = Integer.parseInt(extras.getString("notId", "0"));
     }
     catch(NumberFormatException e) {
       Log.e(TAG, "Number format exception - Error parsing Notification ID: " + e.getMessage());
@@ -95,7 +91,13 @@ public class GCMIntentService extends GCMBaseIntentService {
     catch(Exception e) {
       Log.e(TAG, "Number format exception - Error parsing Notification ID" + e.getMessage());
     }
-    Log.d(TAG, "Generated random notId: " + notId);
+    if (notId == 0) {
+      // no notId passed, so assume we want to show all notifications, so make it a random number
+      notId = new Random().nextInt(100000);
+      Log.d(TAG, "Generated random notId: " + notId);
+    } else {
+      Log.d(TAG, "Received notId: " + notId);
+    }
 
 
     NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
