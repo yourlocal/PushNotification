@@ -77,7 +77,7 @@ namespace WPCordovaClassLib.Cordova.Commands
             }
         }
 
-        public void isRegistered(string options)
+        public void areNotificationsEnabled(string options)
         {
             Options isRegisteredOptions;
             if (!TryDeserializeOptions(options, out isRegisteredOptions))

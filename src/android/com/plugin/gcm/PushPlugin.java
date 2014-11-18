@@ -21,7 +21,7 @@ public class PushPlugin extends CordovaPlugin {
 
 	public static final String REGISTER = "register";
 	public static final String UNREGISTER = "unregister";
-	public static final String IS_REGISTERED = "isRegistered";
+	public static final String ARE_NOTIFICATIONS_ENABLED = "areNotificationsEnabled ";
 	public static final String EXIT = "exit";
 
 	private static CordovaWebView gWebView;
@@ -75,11 +75,11 @@ public class PushPlugin extends CordovaPlugin {
 				gCachedExtras = null;
 			}
 
-		} else if (IS_REGISTERED.equals(action)) {
+		} else if (ARE_NOTIFICATIONS_ENABLED.equals(action)) {
 
-      Log.v(TAG, "IS_REGISTERED");
+      Log.v(TAG, "ARE_NOTIFICATIONS_ENABLED");
       final boolean registered = GCMRegistrar.isRegistered(getApplicationContext());
-      Log.d(TAG, "isRegistered? " + registered);
+      Log.d(TAG, "areNotificationsEnabled? " + registered);
       callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, registered));
       result = true;
 

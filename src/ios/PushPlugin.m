@@ -43,7 +43,7 @@
     [self successWithMessage:@"unregistered"];
 }
 
-- (void)isRegistered:(CDVInvokedUrlCommand*)command;
+- (void)areNotificationsEnabled:(CDVInvokedUrlCommand*)command;
 {
   self.callbackId = command.callbackId;
   BOOL registered;

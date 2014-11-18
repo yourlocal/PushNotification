@@ -46,7 +46,7 @@
 
 - (void)register:(CDVInvokedUrlCommand*)command;
 
-- (void)isRegistered:(CDVInvokedUrlCommand*)command;
+- (void)areNotificationsEnabled:(CDVInvokedUrlCommand*)command;
 
 - (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken;
 - (void)didFailToRegisterForRemoteNotificationsWithError:(NSError *)error;
