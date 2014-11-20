@@ -8,8 +8,13 @@ The Telerik Push Notifications is based on the Phonegap Push Plugin: [https://gi
 
 In order to use the plugin with the Telerik Backend Services, which supports iOS, Android, WP8 and Windows 8, take a look at the official documentation:
 
-[http://docs.telerik.com/platform/backend-services/getting-started/push-notifications/integrating-push-hybrid](http://docs.telerik.com/platform/backend-services/getting-started/push-notifications/integrating-push-hybrid)
+- [Getting started with Push Notifications in a Hybrid Application with Telerik Backend Services](http://docs.telerik.com/platform/backend-services/getting-started/push-notifications/integrating-push-hybrid)
 
+Or take a look at our hybrid push notifications sample here:
+
+- [Backend Services Push Hybrid simple application](https://github.com/telerik/backend-services-push-hybrid)
+
+- [Backend Services Push Hybrid advanced application](https://github.com/telerik/backend-services-push-hybrid-advanced)
 
 ## Features
 
@@ -55,42 +60,27 @@ In order to use the plugin with the Telerik Backend Services, which supports iOS
 
 		// sets the application badge to the provided value 
 		// if badge === 0 clears out the badge 
-		pushNotification.setApplicationIconBadgeNumber = function(badge, callback) { 
-		    
-		}; 
+		pushNotification.setApplicationIconBadgeNumber(badge, callback);
  
 
 - Check if the Push Notifications are enabled on the device
 
 		// Checks whether the Push Notifications are enabled for this Application on the Device 
-		pushNotification.areNotificationsEnabled = function(callback) { 
-    		callback(true || false); 
-		}; 
+		pushNotification.areNotificationsEnabled(function(areEnabled) {
+		});
 
 
 - Send Single or Multiple notifications to Android devices
 
 		Single notifications: Send notifications with the same "notId" in the payload of the notification.
-		Multiple notifications: Send notifications with different "notId" values in the payload of the notifications. The plugin will then stack these multiple notifications.
-
-
-### Contents
-
-- [LICENSE](#license)
-- [Manual Installation](#manual_installation)
-- [Automatic Installation](#automatic_installation)
-- [Plugin API](#plugin_api)
-- [Testing](#testing)
-- [Additional Resources](#additional_resources)
-- [Acknowledgments](#acknowledgments)
-
-
+		Multiple notifications: Send notifications with different "notId" values in the payload of the notifications. The plugin will then stack these multiple notifications
 
 ##<a name="license"></a> LICENSE
 
 	The MIT License
 
-	Copyright (c) 2014 Telerik, Inc
+	Copyright (c) 2012 Adobe Systems, inc.
+	portions Copyright (c) 2012 Olivier Louvignes
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
