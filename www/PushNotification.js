@@ -19,6 +19,34 @@ PushNotification.prototype.register = function(successCallback, errorCallback, o
     cordova.exec(successCallback, errorCallback, "PushPlugin", "register", [options]);
 };
 
+PushNotification.prototype.UserNotificationTypes = {
+    Badge : "badge",
+    Alert : "alert",
+    Sound : "sound"
+};
+
+PushNotification.prototype.UserNotificationActivationMode = {
+    Foreground : "foreground",
+    Background : "background"
+};
+
+PushNotification.prototype.registerUserNotificationSettings = function(successCallback, errorCallback, options) {
+    if (errorCallback == null) { errorCallback = function() {}}
+
+    if (typeof errorCallback != "function")  {
+        console.log("PushNotification.registerUserNotificationSettings failure: failure parameter not a function");
+        return
+    }
+
+    if (typeof successCallback != "function") {
+        console.log("PushNotification.registerUserNotificationSettings failure: success callback parameter must be a function");
+        return
+    }
+
+    cordova.exec(successCallback, errorCallback, "PushPlugin", "registerUserNotificationSettings", [options]);
+};
+
+
 // Call this to unregister for push notifications
 PushNotification.prototype.unregister = function(successCallback, errorCallback, options) {
     if (errorCallback == null) { errorCallback = function() {}}
