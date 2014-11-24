@@ -21,7 +21,7 @@ public class PushPlugin extends CordovaPlugin {
 
 	public static final String REGISTER = "register";
 	public static final String UNREGISTER = "unregister";
-	public static final String ARE_NOTIFICATIONS_ENABLED = "areNotificationsEnabled ";
+	public static final String ARE_NOTIFICATIONS_ENABLED = "areNotificationsEnabled";
 	public static final String EXIT = "exit";
 
 	private static CordovaWebView gWebView;
