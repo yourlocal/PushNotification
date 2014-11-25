@@ -96,7 +96,7 @@ Or take a look at our hybrid push notifications sample here:
               			otherCategory
             		]
           	}
-      );
+      	);
             
 
 - Set an application icon badge number
