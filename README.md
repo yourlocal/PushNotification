@@ -108,6 +108,45 @@ Or take a look at our hybrid push notifications samples:
 		// Checks whether Push Notifications are enabled for this Application on the Device 
 		pushNotification.areNotificationsEnabled(successCallback, errorCallback, options);
 
+- Handling Multiple Notifications on Android devices - Since version 2.4.X of this plugin, by default new notifications are stacked in the notification panel and do not replace previous notifications. To change this behavior and control which notifications are replaced and which are not, set the notId value as part of the notification's payload.
+
+  - To always stack new notifications, don't pass the **notId** value.
+
+			"data": {
+        		"title": "Hello",
+	            "message": "Always stack the notification.", 
+	    	}
+
+  - To always replace existing notifications, use the same positive (> 0) **notId** value for all notifications.
+
+			"data": {
+	        	"title": "Hello",
+    	        "message": "Always replace the notification.",
+		        "notId": 1 // send the same notId every time 
+	    	}
+
+  - If your application supports different kinds of push notifications, you can use a mixed approach based on your business logic. Notifications that are sent with the same notId value are replaced automatically, so only the last one is visible. For the rest of the notifications which should be stacked, just do not set notId.
+
+			"data": {
+				"title": "Hello",
+				"message": "This notification will be stacked."
+				"notId": 5
+			}
+
+			"data": {
+				"title": "Hello",
+				"message": "This notification will be stacked."
+				"notId": 6
+			}
+
+			"data": {
+				"title": "Hello",
+				"message": "This notification will replace the first one with value 5."
+				"notId": 5
+			}
+ 
+
+
 ##<a name="license"></a> LICENSE
 
 	The MIT License
