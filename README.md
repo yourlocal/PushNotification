@@ -1,8 +1,8 @@
 # Telerik Push Notifications Plugin for Android, iOS, WP8 and Windows 8
 
-## DESCRIPTION
+## Description
 
-The Telerik Push Notifications is based on the Phonegap Push Plugin: [https://github.com/phonegap-build/PushPlugin](https://github.com/phonegap-build/PushPlugin) and contains some bug fixes, new features and is easily integrated with the Telerik Backend Services.
+The Telerik Push Notifications is based on the Phonegap Push Plugin: [https://github.com/phonegap-build/PushPlugin](https://github.com/phonegap-build/PushPlugin) and contains some bug fixes, new features and is easily integrated with [Telerik Backend Services](http://www.telerik.com/backend-services).
 
 ## Using with Telerik Backend Services
 
@@ -10,7 +10,7 @@ In order to use the plugin with the Telerik Backend Services, which supports iOS
 
 - [Getting started with Push Notifications in a Hybrid Application with Telerik Backend Services](http://docs.telerik.com/platform/backend-services/getting-started/push-notifications/integrating-push-hybrid)
 
-Or take a look at our hybrid push notifications sample here:
+Or take a look at our hybrid push notifications samples:
 
 - [Backend Services Push Hybrid simple application](https://github.com/telerik/backend-services-push-hybrid)
 
@@ -21,10 +21,7 @@ Or take a look at our hybrid push notifications sample here:
 - Register a device for push notification
 
          var deviceSpecificOptions = { ... }; // set the device specific options here
-		 pushNotification.register(
-    			successHandler,
-    			errorHandler,
-    			deviceSpecificOptions);
+		 pushNotification.register(successHandler, errorHandler, deviceSpecificOptions);
 
 - Unregister a device for push notification
 
@@ -34,7 +31,7 @@ Or take a look at our hybrid push notifications sample here:
 - iOS 8 interactive Push Support (coming soon)
   
         // Get the push plugin instance
-	var pushPlugin = window.plugins.pushNotification;
+		var pushPlugin = window.plugins.pushNotification;
 
         // Define a new Read Action
       	var readAction = {
@@ -103,20 +100,13 @@ Or take a look at our hybrid push notifications sample here:
 
 		// sets the application badge to the provided value 
 		// if badge === 0 clears out the badge 
-		pushNotification.setApplicationIconBadgeNumber(badge, callback);
+		pushNotification.setApplicationIconBadgeNumber(successCallback, errorCallback, badge)
  
 
 - Check if the Push Notifications are enabled on the device
 
-		// Checks whether the Push Notifications are enabled for this Application on the Device 
-		pushNotification.areNotificationsEnabled(function(areEnabled) {
-		});
-
-
-- Send Single or Multiple notifications to Android devices
-
-		Single notifications: Send notifications with the same "notId" in the payload of the notification.
-		Multiple notifications: Send notifications with different "notId" values in the payload of the notifications. The plugin will then stack these multiple notifications
+		// Checks whether Push Notifications are enabled for this Application on the Device 
+		pushNotification.areNotificationsEnabled(successCallback, errorCallback, options);
 
 ##<a name="license"></a> LICENSE
 
