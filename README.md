@@ -32,28 +32,71 @@ Or take a look at our hybrid push notifications sample here:
 
 		
 - iOS 8 interactive Push Support (coming soon)
+  
+        // Get the push plugin instance
+	var pushPlugin = window.plugins.pushNotification;
 
-		// 1. Configure Notification Action objects - these will be translated to native iOS 8 notification actions
-		var readAction = pushNotification.createUserNotificationAction({ 
-    		identifier: 'READ_IDENTIFIER', 
-    		title: 'Read', 
-    		activationMode: PushNotification.ActivationMode.Foreground, // || Background 
-    		destructive: false, 
-    		authenticationRequired: true 
-		}); 
+        // Define a new Read Action
+      	var readAction = {
+        	identifier: 'READ_IDENTIFIER', // mandatory
+        	title: 'Read', // mandatory
+        	activationMode: pushPlugin.UserNotificationActivationMode.Foreground, // default: Background
+        	destructive: false, // default: false
+        	authenticationRequired: true // default: false
+      	};
+
+      	// Define a new Ignore Action. Defaults are commented out
+      	var ignoreAction = {
+	        identifier: 'IGNORE_IDENTIFIER',
+        	title: 'Ignore'
+        	//activationMode: pushPlugin.UserNotificationActivationMode.Background,
+        	//destructive: false,
+        	//authenticationRequired: false
+      	};
+
+      	// Define a new Delete Action. Defaults are commented out.
+      	var deleteAction = {
+	        identifier: 'DELETE_IDENTIFIER',
+        	title: 'Delete',
+        	//activationMode: pushPlugin.UserNotificationActivationMode.Background,
+        	destructive: true,
+        	authenticationRequired: true
+      	};
+
+        // Define a read category with default and minimal context actions
+      	var readCategory = {
+        	identifier: 'READ_CATEGORY', // mandatory
+        	actionsForDefaultContext: [readAction, ignoreAction, deleteAction], // mandatory
+        	actionsForMinimalContext: [readAction, deleteAction]  // mandatory
+      	};
  
-		// 2. Create a category object with the actions inside
-		var readCategory = pushNotification.createUserNotificationCategory({ 
-    		identifier: 'READ_CATEGORY', 
-    		actionsForDefaultContext: [readAction], // alert dialog 
-    		actionsForMinimalContext: [readAction] // all other notifications 
-		}) 
+        // Define another category, with different set of actions
+      	var otherCategory = {
+	        identifier: 'OTHER_CATEGORY', // mandatory
+        	actionsForDefaultContext: [ignoreAction, deleteAction], // mandatory
+        	actionsForMinimalContext: [deleteAction]  // mandatory
+      	};
  
-		// 3. Register user specified category in the Device. Fires the onUserNotificationSettingsReady callback when done 
-		pushNotification.registerUserNotificationSettings({ 
-    		types: [PushNotification.NotificationType.Alert, PushNotification.NotificationType.Badge], 
-    		categories: [readCategory]
-		}, onUserNotificationSettingsReady); 
+        // Register the category and the other interactive settings.
+      	pushPlugin.registerUserNotificationSettings(
+          	// the success callback which will immediately return (APNs is not contacted for this)
+          	onUserNotificationSettingsReady,
+          	// called in case the configuration is incorrect
+          	errorHandler,
+          	{
+            		// asking permission for these features
+            		types: [
+              			pushPlugin.UserNotificationTypes.Alert,
+        	      		pushPlugin.UserNotificationTypes.Badge,
+	              		pushPlugin.UserNotificationTypes.Sound
+            		],
+            		// register these categories
+            		categories: [
+              			readCategory,
+              			otherCategory
+            		]
+          	}
+      );
             
 
 - Set an application icon badge number
