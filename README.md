@@ -1,16 +1,18 @@
-# Telerik Push Notifications Plugin for Android, iOS, WP8 and Windows 8
+# Telerik Push Notifications Plugin
 
 ## Description
 
-The Telerik Push Notifications is based on the Phonegap Push Plugin: [https://github.com/phonegap-build/PushPlugin](https://github.com/phonegap-build/PushPlugin) and contains some bug fixes, new features and is easily integrated with [Telerik Backend Services](http://www.telerik.com/backend-services).
+The Telerik Push Notifications is based on the [Phonegap Push Plugin](https://github.com/phonegap-build/PushPlugin](https://github.com/phonegap-build/PushPlugin).
+
+It contains some bug fixes and new features and is easily integrated with [Telerik Backend Services](http://www.telerik.com/backend-services).
 
 ## Using with Telerik Backend Services
 
-In order to use the plugin with the Telerik Backend Services, which supports iOS, Android, WP8 and Windows 8, take a look at the official documentation:
+In order to use the plugin with Telerik Backend Services, which supports iOS, Android, WP8 and Windows 8, take a look at the official documentation:
 
 - [Getting started with Push Notifications in a Hybrid Application with Telerik Backend Services](http://docs.telerik.com/platform/backend-services/getting-started/push-notifications/integrating-push-hybrid)
 
-Or take a look at our hybrid push notifications samples:
+For further information you can take a look into the Backend Services hybrid push notifications samples:
 
 - [Backend Services Push Hybrid simple application](https://github.com/telerik/backend-services-push-hybrid)
 
@@ -18,17 +20,17 @@ Or take a look at our hybrid push notifications samples:
 
 ## Features
 
-- Register a device for push notification
+- Register a device for push notifications
 
          var deviceSpecificOptions = { ... }; // set the device specific options here
 		 pushNotification.register(successHandler, errorHandler, deviceSpecificOptions);
 
-- Unregister a device for push notification
+- Unregister a device from push notifications
 
 		pushNotification.unregister(successHandler, errorHandler, options);
 
 		
-- iOS 8 interactive Push Support (coming soon)
+- iOS 8 interactive push notifications support (coming soon)
   
         // Get the push plugin instance
 		var pushPlugin = window.plugins.pushNotification;
@@ -96,25 +98,25 @@ Or take a look at our hybrid push notifications samples:
       	);
             
 
-- Set an application icon badge number
+- Set an application icon badge number (iOS only)
 
 		// sets the application badge to the provided value 
 		// if badge === 0 clears out the badge 
 		pushNotification.setApplicationIconBadgeNumber(successCallback, errorCallback, badge)
  
 
-- Check if the Push Notifications are enabled on the device
+- Check if the user has disabled push notifications on the device
 
 		// Checks whether Push Notifications are enabled for this Application on the Device 
 		pushNotification.areNotificationsEnabled(successCallback, errorCallback, options);
 
-- Handling Multiple Notifications on Android devices - Since version 2.4.X of this plugin, by default new notifications are stacked in the notification panel and do not replace previous notifications. To change this behavior and control which notifications are replaced and which are not, set the notId value as part of the notification's payload.
+- Handling multiple notifications on Android devices - Since version 2.4.X of this plugin, all new notifications are stacked in the notification panel and do not replace previous notifications by default. To change this behavior and control which notifications are replaced and which are not, pass a **notId** key in the notification payload.
 
   - To always stack new notifications, don't pass the **notId** value.
 
 			"data": {
         		"title": "Hello",
-	            "message": "Always stack the notification.", 
+	                "message": "Always stack the notification.", 
 	    	}
 
   - To always replace existing notifications, use the same positive (> 0) **notId** value for all notifications.
@@ -125,7 +127,7 @@ Or take a look at our hybrid push notifications samples:
 		        "notId": 1 // send the same notId every time 
 	    	}
 
-  - If your application supports different kinds of push notifications, you can use a mixed approach based on your business logic. Notifications that are sent with the same notId value are replaced automatically, so only the last one is visible. For the rest of the notifications which should be stacked, just do not set notId.
+  - If your application supports different kinds of push notifications, you can use a mixed approach based on your business logic. Notifications that are sent with the same **notId** value are replaced automatically, so only the last one is visible. For the rest of the notifications which should be stacked, just do not send a **notId** key in the payload.
 
 			"data": {
 				"title": "Hello",
@@ -141,7 +143,7 @@ Or take a look at our hybrid push notifications samples:
 
 			"data": {
 				"title": "Hello",
-				"message": "This notification will replace the first one with value 5."
+				"message": "This notification will replace the first one."
 				"notId": 5
 			}
  
