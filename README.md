@@ -2,7 +2,7 @@
 
 ## Description
 
-The Telerik Push Notifications is based on the [Phonegap Push Plugin](https://github.com/phonegap-build/PushPlugin](https://github.com/phonegap-build/PushPlugin).
+The Telerik Push Notifications is based on the [Phonegap Push Plugin](https://github.com/phonegap-build/PushPlugin).
 
 It contains some bug fixes and new features and is easily integrated with [Telerik Backend Services](http://www.telerik.com/backend-services).
 
