@@ -110,7 +110,7 @@ For further information you can take a look into the Backend Services hybrid pus
 		// Checks whether Push Notifications are enabled for this Application on the Device 
 		pushNotification.areNotificationsEnabled(successCallback, errorCallback, options);
 
-- Handling multiple notifications on Android devices - Since version 2.4.X of this plugin, all new notifications are stacked in the notification panel and do not replace previous notifications by default. To change this behavior and control which notifications are replaced and which are not, pass a **notId** key in the notification payload.
+- Handling multiple notifications on Android devices - Since version 2.4.3 of this plugin, all new notifications are stacked in the notification panel and do not replace previous notifications by default. To change this behavior and control which notifications are replaced and which are not, pass a **notId** key in the notification payload.
 
   - To always stack new notifications, don't pass the **notId** value.
 
