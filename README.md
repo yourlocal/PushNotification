@@ -14,9 +14,9 @@ In order to use the plugin with Telerik Backend Services, which supports iOS, An
 
 For further information you can take a look into the Backend Services hybrid push notifications samples:
 
-- [Backend Services Push Hybrid simple application](https://github.com/telerik/backend-services-push-hybrid)
+- [Backend Services Push Hybrid simple application](https://github.com/telerik/backend-services-push-hybrid) - basic example of using Push Notifications provided by Telerik Backend Services in a hybrid app built with Telerik AppBuilder.
 
-- [Backend Services Push Hybrid advanced application](https://github.com/telerik/backend-services-push-hybrid-advanced)
+- [Backend Services Push Hybrid advanced application](https://github.com/telerik/backend-services-push-hybrid-advanced) - example of creating and receiving Push Notifications provided by Telerik Backend Services.
 
 ## Features
 
