@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -45,13 +45,24 @@ namespace WPCordovaClassLib.Cordova.Commands
             }
 
             SubscribePushChannelEvents(pushChannel);
-            var result = new RegisterResult
-            {
-                ChannelName = this.pushOptions.ChannelName,
-                Uri = pushChannel.ChannelUri == null ? string.Empty : pushChannel.ChannelUri.ToString()
-            };
 
-            this.DispatchCommandResult(new PluginResult(PluginResult.Status.OK, result));
+            if (pushChannel.ChannelUri == null)
+            {
+                // wait for the channel to become ready
+                PluginResult pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
+                pluginResult.KeepCallback = true;
+                this.DispatchCommandResult(pluginResult, this.CurrentCommandCallbackId);
+            }
+            else
+            {
+                var result = new RegisterResult
+                {
+                    ChannelName = this.pushOptions.ChannelName,
+                    Uri = pushChannel.ChannelUri.ToString()
+                };
+
+                this.DispatchCommandResult(new PluginResult(PluginResult.Status.OK, result));
+            }
         }
 
         public void unregister(string options)
@@ -109,6 +120,10 @@ namespace WPCordovaClassLib.Cordova.Commands
                 ChannelName = this.pushOptions.ChannelName,
                 Uri = e.ChannelUri.ToString()
             };
+            if (this.CurrentCommandCallbackId != null)
+            {
+                this.DispatchCommandResult(new PluginResult(PluginResult.Status.OK, result));
+            }
             this.ExecuteCallback(this.pushOptions.UriChangedCallback, JsonConvert.SerializeObject(result));
         }
 

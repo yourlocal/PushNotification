@@ -1,5 +1,10 @@
 package com.plugin.gcm;
 
+import java.util.Random;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -9,11 +14,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import com.google.android.gcm.GCMBaseIntentService;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.Random;
+import com.google.android.gcm.GCMBaseIntentService;
 
 @SuppressLint("NewApi")
 public class GCMIntentService extends GCMBaseIntentService {
@@ -27,24 +29,24 @@ public class GCMIntentService extends GCMBaseIntentService {
   @Override
   public void onRegistered(Context context, String regId) {
 
-    Log.v(TAG, "onRegistered: "+ regId);
+    Log.v(TAG, "onRegistered: " + regId);
 
     JSONObject json;
 
-    try
-    {
+    try {
       json = new JSONObject().put("event", "registered");
       json.put("regid", regId);
 
       Log.v(TAG, "onRegistered: " + json.toString());
+      // EV: added this because it makes a lot of sense
+      PushPlugin.sendAsyncRegistrationResult(true, regId);
 
+      // EV: kept this for backward compatibility
       // Send this JSON data to the JavaScript application above EVENT should be set to the msg type
       // In this case this is the registration ID
-      PushPlugin.sendJavascript( json );
+      PushPlugin.sendJavascript(json);
 
-    }
-    catch( JSONException e)
-    {
+    } catch (JSONException e) {
       // No message to the user is sent, JSON failed
       Log.e(TAG, "onRegistered: JSON exception");
     }
@@ -61,14 +63,12 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     // Extract the payload from the message
     Bundle extras = intent.getExtras();
-    if (extras != null)
-    {
+    if (extras != null) {
       // if we are in the foreground, just surface the payload, else post it to the statusbar
       if (PushPlugin.isInForeground()) {
         extras.putBoolean("foreground", true);
         PushPlugin.sendExtras(extras);
-      }
-      else {
+      } else {
         extras.putBoolean("foreground", false);
 
         // Send a notification if there is a message
@@ -82,6 +82,7 @@ public class GCMIntentService extends GCMBaseIntentService {
   public void createNotification(Context context, Bundle extras)
   {
     int notId = 0;
+
     try {
       notId = Integer.parseInt(extras.getString("notId", "0"));
     }
@@ -114,7 +115,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     if (extras.getString("defaults") != null) {
       try {
         defaults = Integer.parseInt(extras.getString("defaults"));
-      } catch (NumberFormatException e) {}
+      } catch (NumberFormatException ignored) {}
     }
 
     NotificationCompat.Builder mBuilder =
@@ -140,7 +141,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     }
 
 
-    mNotificationManager.notify((String) appName, notId, mBuilder.build());
+    mNotificationManager.notify(appName, notId, mBuilder.build());
   }
 
   private static String getAppName(Context context)
@@ -154,8 +155,9 @@ public class GCMIntentService extends GCMBaseIntentService {
   }
 
   @Override
-  public void onError(Context context, String errorId) {
-    Log.e(TAG, "onError - errorId: " + errorId);
+  public void onError(Context context, String error) {
+    Log.e(TAG, "onError: " + error);
+    PushPlugin.sendAsyncRegistrationResult(false, error);
   }
 
 }
