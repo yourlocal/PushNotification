@@ -27,6 +27,7 @@
 	</engines>
 
   <dependency id="org.apache.cordova.device" />
+  <dependency id="org.apache.cordova.globalization" />
 
   <!-- android -->
 	<platform name="android">
