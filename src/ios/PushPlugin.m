@@ -121,6 +121,8 @@
       nsTypes |= UIUserNotificationTypeAlert;
     } else if ([type isEqualToString:@"sound"]) {
       nsTypes |= UIUserNotificationTypeSound;
+    } else {
+      [self failWithMessage:[NSString stringWithFormat:@"Unsupported type: %@, use one of badge, alert, sound", type] withError:nil];
     }
   }
 
