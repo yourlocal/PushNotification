@@ -90,15 +90,10 @@ static char launchNotificationKey;
 
   [mutableNotification setObject:identifier forKey:@"identifier"];
   
-  if (application.applicationState == UIApplicationStateActive) {
-    PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];
-    pushHandler.notificationMessage = mutableNotification;
-    pushHandler.isInline = YES;
-    [pushHandler notificationReceived];
-  } else {
-    // save it for later
-    self.launchNotification = mutableNotification;
-  }
+  PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];
+  pushHandler.notificationMessage = mutableNotification;
+  pushHandler.isInline = YES;
+  [pushHandler notificationReceived];
   
   completionHandler();
 }
