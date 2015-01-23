@@ -30,7 +30,7 @@ For further information you can take a look into the Backend Services hybrid pus
 		pushNotification.unregister(successHandler, errorHandler, options);
 
 		
-- iOS 8 interactive push notifications support (coming soon)
+- iOS 8 interactive push notifications support (available from v.2.5 and above)
   
         // Get the push plugin instance
 		var pushPlugin = window.plugins.pushNotification;
