@@ -61,7 +61,7 @@
 {
   self.callbackId = command.callbackId;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-    if ([[UIApplication sharedApplication]respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+    if (![[UIApplication sharedApplication]respondsToSelector:@selector(registerUserNotificationSettings:)]) {
         [self successWithMessage:[NSString stringWithFormat:@"%@", @"user notifications not supported for this ios version."]];
         return;
     }
