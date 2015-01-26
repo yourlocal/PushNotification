@@ -61,6 +61,11 @@
 {
   self.callbackId = command.callbackId;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    if (![[UIApplication sharedApplication]respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        [self successWithMessage:[NSString stringWithFormat:@"%@", @"user notifications not supported for this ios version."]];
+        return;
+    }
+    
   NSDictionary *options = [command.arguments objectAtIndex:0];
   NSArray *categories = [options objectForKey:@"categories"];
   if (categories == nil) {
@@ -177,7 +182,7 @@
   NSMutableDictionary* options = [command.arguments objectAtIndex:0];
   
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-		UIUserNotificationType UserNotificationTypes = UIUserNotificationTypeNone;
+    UIUserNotificationType UserNotificationTypes = UIUserNotificationTypeNone;
 #endif
   UIRemoteNotificationType notificationTypes = UIRemoteNotificationTypeNone;
   
@@ -254,11 +259,11 @@
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
   }
 #else
-		[[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
 #endif
   
-  if (notificationMessage)			// if there is a pending startup notification
-    [self notificationReceived];	// go ahead and process it
+  if (notificationMessage)      // if there is a pending startup notification
+    [self notificationReceived];  // go ahead and process it
 }
 
 /*
@@ -285,7 +290,11 @@
   // Check what Notifications the user has turned on.  We registered for all three, but they may have manually disabled some or all of them.
   NSUInteger rntypes;
   #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-      rntypes = [[[UIApplication sharedApplication] currentUserNotificationSettings] types]; 
+    if([UIUserNotificationSettings class]){
+      rntypes = [[[UIApplication sharedApplication] currentUserNotificationSettings] types];
+    } else {
+        rntypes = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+    }
   #else
       rntypes = [[UIApplication sharedApplication] enabledRemoteNotificationTypes]; 
   #endif
@@ -319,7 +328,7 @@
   [results setValue:dev.model forKey:@"deviceModel"];
   [results setValue:dev.systemVersion forKey:@"deviceSystemVersion"];
   
-		[self successWithMessage:[NSString stringWithFormat:@"%@", token]];
+    [self successWithMessage:[NSString stringWithFormat:@"%@", token]];
 #endif
 }
 
