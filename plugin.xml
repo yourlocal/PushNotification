@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.phonegap.plugins.PushPlugin"
-    version="2.4.3">
+    version="2.5.1">
 
   <name>PushPlugin</name>
 	<author>Bob Easterday</author>
@@ -26,7 +26,7 @@
 	</engines>
 
   <dependency id="org.apache.cordova.device" />
-	<dependency id="org.apache.cordova.globalization" />
+  <dependency id="org.apache.cordova.globalization" />
 
   <!-- android -->
 	<platform name="android">
