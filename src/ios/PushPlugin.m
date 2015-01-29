@@ -61,6 +61,11 @@
 {
   self.callbackId = command.callbackId;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    if (![[UIApplication sharedApplication]respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        [self successWithMessage:[NSString stringWithFormat:@"%@", @"user notifications not supported for this ios version."]];
+        return;
+    }
+    
   NSDictionary *options = [command.arguments objectAtIndex:0];
   NSArray *categories = [options objectForKey:@"categories"];
   if (categories == nil) {
@@ -121,6 +126,8 @@
       nsTypes |= UIUserNotificationTypeAlert;
     } else if ([type isEqualToString:@"sound"]) {
       nsTypes |= UIUserNotificationTypeSound;
+    } else {
+      [self failWithMessage:[NSString stringWithFormat:@"Unsupported type: %@, use one of badge, alert, sound", type] withError:nil];
     }
   }
 
@@ -175,7 +182,7 @@
   NSMutableDictionary* options = [command.arguments objectAtIndex:0];
   
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-		UIUserNotificationType UserNotificationTypes = UIUserNotificationTypeNone;
+    UIUserNotificationType UserNotificationTypes = UIUserNotificationTypeNone;
 #endif
   UIRemoteNotificationType notificationTypes = UIRemoteNotificationTypeNone;
   
@@ -252,11 +259,11 @@
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
   }
 #else
-		[[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:notificationTypes];
 #endif
   
-  if (notificationMessage)			// if there is a pending startup notification
-    [self notificationReceived];	// go ahead and process it
+  if (notificationMessage)      // if there is a pending startup notification
+    [self notificationReceived];  // go ahead and process it
 }
 
 /*
@@ -281,7 +288,16 @@
   [results setValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:@"appVersion"];
   
   // Check what Notifications the user has turned on.  We registered for all three, but they may have manually disabled some or all of them.
-  NSUInteger rntypes = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+  NSUInteger rntypes;
+  #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    if([UIUserNotificationSettings class]){
+      rntypes = [[[UIApplication sharedApplication] currentUserNotificationSettings] types];
+    } else {
+        rntypes = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+    }
+  #else
+      rntypes = [[UIApplication sharedApplication] enabledRemoteNotificationTypes]; 
+  #endif
   
   // Set the defaults to disabled unless we find otherwise...
   NSString *pushBadge = @"disabled";
@@ -312,7 +328,7 @@
   [results setValue:dev.model forKey:@"deviceModel"];
   [results setValue:dev.systemVersion forKey:@"deviceSystemVersion"];
   
-		[self successWithMessage:[NSString stringWithFormat:@"%@", token]];
+    [self successWithMessage:[NSString stringWithFormat:@"%@", token]];
 #endif
 }
 

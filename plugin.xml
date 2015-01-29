@@ -25,7 +25,10 @@
 		<engine name="cordova" version=">=3.0.0" />
 	</engines>
 
-	<!-- android -->
+  <dependency id="org.apache.cordova.device" />
+	<dependency id="org.apache.cordova.globalization" />
+
+  <!-- android -->
 	<platform name="android">
 
 		<config-file target="res/xml/config.xml" parent="/*">

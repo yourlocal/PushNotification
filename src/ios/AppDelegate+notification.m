@@ -89,20 +89,20 @@ static char launchNotificationKey;
   NSMutableDictionary *mutableNotification = [notification mutableCopy];
 
   [mutableNotification setObject:identifier forKey:@"identifier"];
-  
   if (application.applicationState == UIApplicationStateActive) {
     PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];
     pushHandler.notificationMessage = mutableNotification;
     pushHandler.isInline = YES;
     [pushHandler notificationReceived];
   } else {
-    // save it for later
-    self.launchNotification = mutableNotification;
+    PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];    
+    pushHandler.notificationMessage = mutableNotification;    
+    [pushHandler performSelectorOnMainThread:@selector(notificationReceived) withObject:pushHandler waitUntilDone:NO];
   }
-  
   completionHandler();
 }
 #endif
+
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
   
