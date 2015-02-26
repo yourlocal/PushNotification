@@ -83,6 +83,7 @@ public class PushPlugin extends CordovaPlugin {
 				if (regid.isEmpty()) {
 					new AsyncRegister().execute(callbackContext);
 				} else {
+					sendJavascript(new JSONObject().put("event", "registered").put("regid", regid));
 					callbackContext.success(regid);
 				}
 				result = true;
@@ -165,9 +166,10 @@ public class PushPlugin extends CordovaPlugin {
 				regid = gcm.register(gSenderID);
 				Log.v(TAG, "Device registered, registration ID=" + regid);
 				storeRegistrationId(getApplicationContext(), regid);
+				sendJavascript(new JSONObject().put("event", "registered").put("regid", regid));
 				callbackContext[0].success(regid);
-			} catch (IOException ex) {
-				Log.d(TAG, "Got IOException on registerInBackground", ex);
+			} catch (Exception ex) {
+				Log.d(TAG, "Got Exception on registerInBackground", ex);
 			}
 			return null;
 		}
