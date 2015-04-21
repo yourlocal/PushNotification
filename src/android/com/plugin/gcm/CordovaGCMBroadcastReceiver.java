@@ -100,7 +100,7 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 		if (extras.getString("defaults") != null) {
 			try {
 				defaults = Integer.parseInt(extras.getString("defaults"));
-			} catch (NumberFormatException e) {
+			} catch (NumberFormatException ignore) {
 			}
 		}
 
@@ -136,7 +136,13 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 			mBuilder.setDefaults(defaults);
 		}
 
-		mNotificationManager.notify(appName, notId, mBuilder.build());
+		final Notification notification = mBuilder.build();
+		final int largeIcon = getLargeIcon(context, extras);
+		if (largeIcon > -1) {
+			notification.contentView.setImageViewResource(android.R.id.icon, largeIcon);
+		}
+
+		mNotificationManager.notify(appName, notId, notification);
 	}
 
 	private static String getAppName(Context context) {
@@ -150,25 +156,48 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 
 	private int getSmallIcon(Context context, Bundle extras) {
 
-		int smallIcon = -1;
+		int icon = -1;
 
 		// first try an iconname possible passed in the server payload
-		final String smallIconNameFromServer = extras.getString("smallIcon");
-		if (smallIconNameFromServer != null) {
-			smallIcon = getIconValue(context.getPackageName(), smallIconNameFromServer);
+		final String iconNameFromServer = extras.getString("smallIcon");
+		if (iconNameFromServer != null) {
+			icon = getIconValue(context.getPackageName(), iconNameFromServer);
 		}
 
 		// try a custom included icon in our bundle named ic_stat_notify(.png)
-		if (smallIcon == -1) {
-			smallIcon = getIconValue(context.getPackageName(), "ic_stat_notify");
+		if (icon == -1) {
+			icon = getIconValue(context.getPackageName(), "ic_stat_notify");
 		}
 
 		// fall back to the regular app icon
-		if (smallIcon == -1) {
-			smallIcon = context.getApplicationInfo().icon;
+		if (icon == -1) {
+			icon = context.getApplicationInfo().icon;
 		}
 
-		return smallIcon;
+		return icon;
+	}
+
+	private int getLargeIcon(Context context, Bundle extras) {
+
+		int icon = -1;
+
+		// first try an iconname possible passed in the server payload
+		final String iconNameFromServer = extras.getString("largeIcon");
+		if (iconNameFromServer != null) {
+			icon = getIconValue(context.getPackageName(), iconNameFromServer);
+		}
+
+		// try a custom included icon in our bundle named ic_stat_notify(.png)
+		if (icon == -1) {
+			icon = getIconValue(context.getPackageName(), "ic_notify");
+		}
+
+		// fall back to the regular app icon
+		if (icon == -1) {
+			icon = context.getApplicationInfo().icon;
+		}
+
+		return icon;
 	}
 
 	private int getIconValue(String className, String iconName) {
