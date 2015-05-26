@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -112,6 +113,7 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 						.setContentTitle(extras.getString("title"))
 						.setTicker(extras.getString("title"))
 						.setContentIntent(contentIntent)
+            .setColor(getColor(extras))
 						.setAutoCancel(true);
 
 		String message = extras.getString("message");
@@ -153,6 +155,17 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 
 		return (String) appName;
 	}
+
+  private int getColor(Bundle extras) {
+    int theColor = 0; // default, transparent
+    final String passedColor = extras.getString("color"); // something like "#FFFF0000", or "red"
+    if (passedColor != null) {
+      try {
+        theColor = Color.parseColor(passedColor);
+      } catch (IllegalArgumentException ignore) {}
+    }
+    return theColor;
+  }
 
 	private int getSmallIcon(Context context, Bundle extras) {
 
