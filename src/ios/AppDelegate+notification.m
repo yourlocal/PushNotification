@@ -66,24 +66,48 @@ static char launchNotificationKey;
 // - a regular notification is tapped
 // - an interactive notification is tapped, but not one of its buttons
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-  NSLog(@"didReceiveNotification");
+  NSLog(@"didReceiveRemoteNotification userInfo");
   
   if (application.applicationState == UIApplicationStateActive) {
     PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];
     pushHandler.notificationMessage = userInfo;
     pushHandler.isInline = YES;
     [pushHandler notificationReceived];
+  } else if (application.applicationState == UIApplicationStateBackground) {
+    NSDictionary *aps = [userInfo objectForKey:@"aps"];
+    if (aps == nil || [aps objectForKey:@"content-available"] == nil) {
+      //save it for later
+      self.launchNotification = userInfo;
+    } else {
+      PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];
+      pushHandler.notificationMessage = userInfo;
+      pushHandler.isInline = NO;
+      [pushHandler notificationReceived];
+    }
   } else {
     //save it for later
     self.launchNotification = userInfo;
   }
 }
 
+// TODO verify this if-statement
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
+// doc here: https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplicationDelegate_Protocol/#//apple_ref/occ/intfm/UIApplicationDelegate/application:didReceiveRemoteNotification:fetchCompletionHandler:
+- (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary*)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+  NSLog(@"didReceiveRemoteNotification fetchCompletionHandler");
+
+  PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];
+  [pushHandler backgroundFetch:completionHandler userInfo:userInfo];
+  [self application:application didReceiveRemoteNotification:userInfo];
+}
+#endif
+
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
 // this method is invoked when:
 // - one of the buttons of an interactive notification is tapped
 // see https://developer.apple.com/library/mac/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/IPhoneOSClientImp.html#//apple_ref/doc/uid/TP40008194-CH103-SW1
 - (void)application:(UIApplication *) application handleActionWithIdentifier: (NSString *) identifier forRemoteNotification: (NSDictionary *) notification completionHandler: (void (^)()) completionHandler {
+  NSLog(@"handleActionWithIdentifier forRemoteNotification");
 
   // the notification already contains the category, but the client also needs the identifier (action button)
   NSMutableDictionary *mutableNotification = [notification mutableCopy];

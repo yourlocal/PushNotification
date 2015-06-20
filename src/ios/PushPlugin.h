@@ -40,8 +40,13 @@
 @property (nonatomic, copy) NSString *notificationCallbackId;
 @property (nonatomic, copy) NSString *callback;
 
+@property(nonatomic, strong) NSMutableArray *completionHandlers;
+
 @property (nonatomic, strong) NSDictionary *notificationMessage;
 @property BOOL                          isInline;
+
+- (void)backgroundFetch:(void (^)(UIBackgroundFetchResult))handler userInfo:(NSDictionary *)userInfo;
+- (void)setContentAvailable:(CDVInvokedUrlCommand *)command;
 
 - (void)register:(CDVInvokedUrlCommand*)command;
 - (void)registerUserNotificationSettings:(CDVInvokedUrlCommand*)command;

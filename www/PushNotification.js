@@ -19,6 +19,15 @@ PushNotification.prototype.register = function(successCallback, errorCallback, o
     cordova.exec(successCallback, errorCallback, "PushPlugin", "register", [options]);
 };
 
+/**
+* Call this function to tell the OS whether or not there was data so it can schedule the next fetch operation
+* @param {int} dataType - one of the BackgroundFetchResults or 0 new data 1 no data or 2 failed
+* @returns {void}
+*/
+PushNotification.prototype.setContentAvailable = function(dataType) {
+      cordova.exec(null, null, "PushPlugin", "setContentAvailable", [{type: dataType}]);
+};
+
 PushNotification.prototype.UserNotificationTypes = {
     Badge : "badge",
     Alert : "alert",

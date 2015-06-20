@@ -34,6 +34,24 @@
 @synthesize notificationCallbackId;
 @synthesize callback;
 
+- (void)backgroundFetch:(void (^)(UIBackgroundFetchResult))handler userInfo:(NSDictionary *)userInfo {
+  NSLog(@"Background Fetch");
+  if (!self.completionHandlers) {
+    self.completionHandlers = [[NSMutableArray alloc] init];
+  }
+  [self.completionHandlers addObject:handler];
+}
+
+- (void)setContentAvailable:(CDVInvokedUrlCommand*)command {
+  NSLog(@"setContentAvailable");
+  if ([self.completionHandlers count]) {
+    NSMutableDictionary *options = [command.arguments objectAtIndex:0];
+    NSString *type = [options objectForKey:@"type"];
+    void (^handler)(UIBackgroundFetchResult) = [self.completionHandlers objectAtIndex:0];
+    handler((UIBackgroundFetchResult) [type intValue]);
+    [self.completionHandlers removeObject:handler];
+  }
+}
 
 - (void)unregister:(CDVInvokedUrlCommand*)command;
 {
