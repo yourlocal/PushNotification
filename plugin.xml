@@ -69,6 +69,12 @@
 		<source-file src="src/android/com/plugin/gcm/PushPlugin.java" target-dir="src/com/plugin/gcm/"/>
 		<source-file src="src/android/com/plugin/android-support-v4.jar" target-dir="libs/"/>
 
+		<!-- NOTE: Requires plugman 4.2.0-ish, so older versions won't benefit of this shrink script.
+          If you're building with Cordova-Android 4 it will likely work.
+         To test it simply comment this line and rebuild. Your APK should be bigger with this script disabled.
+     -->
+		<framework src="src/android/shrinkresources.gradle" custom="true" type="gradleReference" />
+
 	</platform>
 
 	<!-- ios -->
