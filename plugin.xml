@@ -33,8 +33,8 @@
 
 	<!-- android -->
 	<platform name="android">
-
-		<dependency id="com.google.playservices" url="https://github.com/MobileChromeApps/google-play-services.git"/>
+		<dependency id="android.support.v4" />
+		<dependency id="com.google.playservices" />
 
 		<config-file target="res/xml/config.xml" parent="/*">
 			<feature name="PushPlugin">
@@ -67,7 +67,6 @@
 		<source-file src="src/android/com/plugin/gcm/CordovaGCMBroadcastReceiver.java" target-dir="src/com/plugin/gcm/"/>
 		<source-file src="src/android/com/plugin/gcm/PushHandlerActivity.java" target-dir="src/com/plugin/gcm/"/>
 		<source-file src="src/android/com/plugin/gcm/PushPlugin.java" target-dir="src/com/plugin/gcm/"/>
-		<source-file src="src/android/com/plugin/android-support-v4.jar" target-dir="libs/"/>
 
 	</platform>
 
@@ -87,7 +86,6 @@
 		<header-file src="src/ios/PushPlugin.h"/>
 
 	</platform>
-
 
 	<!-- wp8 -->
 	<platform name="wp8">
