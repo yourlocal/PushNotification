@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
 				xmlns:android="http://schemas.android.com/apk/res/android"
 				id="com.phonegap.plugins.PushPlugin"
-				version="3.0.0">
+				version="3.0.1">
 
 	<name>PushPlugin</name>
 
@@ -35,7 +35,7 @@
 	<!-- android -->
 	<platform name="android">
 
-		<dependency id="com.google.playservices" url="https://github.com/MobileChromeApps/google-play-services.git"/>
+		<framework src="com.google.android.gms:play-services-gcm:+" />
 
 		<config-file target="res/xml/config.xml" parent="/*">
 			<feature name="PushPlugin">
