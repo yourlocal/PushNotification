@@ -1,5 +1,5 @@
 {
-  "version": "3.0.2",
+  "version": "3.0.3",
   "name": "cordova-plugin-telerik-pushnotifications",
   "cordova_name": "Telerik Push Notifications",
   "description": "This plugin allows your application to receive push notifications. Tailored for (but not limited to) Telerik Platform Backend Services.",
