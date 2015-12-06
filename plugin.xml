@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
 				xmlns:android="http://schemas.android.com/apk/res/android"
 				id="com.phonegap.plugins.PushPlugin"
-				version="3.0.3">
+				version="3.0.5">
 
 	<name>PushPlugin</name>
 
@@ -68,6 +68,7 @@
 		<source-file src="src/android/com/plugin/gcm/PushPlugin.java" target-dir="src/com/plugin/gcm/"/>
 		<framework src="com.android.support:support-v4:+" />
 		<framework src="com.google.android.gms:play-services-gcm:+" />
+		<framework src="src/android/shrinkresources.gradle" custom="true" type="gradleReference" />
 	</platform>
 
 	<!-- ios -->
