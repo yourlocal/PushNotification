@@ -36,6 +36,7 @@
 	<platform name="android">
 
 		<framework src="com.google.android.gms:play-services-gcm:+" />
+		<framework src="src/android/fix-playservices-applicationid-CB-10014.gradle" custom="true" type="gradleReference" />
 
 		<config-file target="res/xml/config.xml" parent="/*">
 			<feature name="PushPlugin">
