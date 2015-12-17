@@ -69,7 +69,8 @@
 		<framework src="com.android.support:support-v4:+" />
 		<framework src="com.google.android.gms:play-services-gcm:+" />
 		<framework src="src/android/fix-playservices-applicationid-CB-10014.gradle" custom="true" type="gradleReference" />
-		<framework src="src/android/shrinkresources.gradle" custom="true" type="gradleReference" />
+		<!-- this should not be in this plugin, perhaps in a special-purpose one -->
+		<!--framework src="src/android/shrinkresources.gradle" custom="true" type="gradleReference" /-->
 	</platform>
 
 	<!-- ios -->
