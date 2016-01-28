@@ -426,14 +426,13 @@
 
 -(void) notificationProcessed:(CDVInvokedUrlCommand*)command
 {
-    NSLog(@"Push Plugin finish called");
+    NSLog(@"Push Plugin notificationProcessed called");
 
     [self.commandDelegate runInBackground:^ {
         UIApplication *app = [UIApplication sharedApplication];
-        float finishTimer = (app.backgroundTimeRemaining > 20.0) ? 20.0 : app.backgroundTimeRemaining;
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            [NSTimer scheduledTimerWithTimeInterval:finishTimer
+            [NSTimer scheduledTimerWithTimeInterval:0.1
                                        target:self
                                        selector:@selector(stopBackgroundTask:)
                                        userInfo:nil
@@ -449,9 +448,8 @@
     NSLog(@"Push Plugin stopBackgroundTask called");
 
     if (self.params) {
-        void (^_completionHandler)() = self.params[@"handler"];
+        _completionHandler = [self.params[@"handler"] copy];
         if (_completionHandler) {
-            NSLog(@"Push Plugin: stopBackgroundTask (remaining t: %f)", app.backgroundTimeRemaining);
             _completionHandler();
             _completionHandler = nil;
         }

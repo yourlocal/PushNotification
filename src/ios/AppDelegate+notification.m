@@ -125,12 +125,12 @@ static char launchNotificationKey;
             completionHandler();
         });
     };
-    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithCapacity:1];
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithCapacity:2];
     [params setObject:safeHandler forKey:@"handler"];
     PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];    
     pushHandler.notificationMessage = mutableNotification;    
     pushHandler.params= params;  
-    [pushHandler performSelectorOnMainThread:@selector(notificationReceived) withObject:pushHandler waitUntilDone:NO];
+    [pushHandler notificationReceived];
   }
 }
 #endif
