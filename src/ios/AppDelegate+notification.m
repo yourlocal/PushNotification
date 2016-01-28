@@ -111,19 +111,27 @@ static char launchNotificationKey;
 
   // the notification already contains the category, but the client also needs the identifier (action button)
   NSMutableDictionary *mutableNotification = [notification mutableCopy];
-
   [mutableNotification setObject:identifier forKey:@"identifier"];
+  NSLog(@"handleActionWithIdentifier");  
+  
   if (application.applicationState == UIApplicationStateActive) {
     PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];
     pushHandler.notificationMessage = mutableNotification;
     pushHandler.isInline = YES;
     [pushHandler notificationReceived];
   } else {
+    void (^safeHandler)() = ^(void){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler();
+        });
+    };
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithCapacity:1];
+    [params setObject:safeHandler forKey:@"handler"];
     PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];    
     pushHandler.notificationMessage = mutableNotification;    
+    pushHandler.params= params;  
     [pushHandler performSelectorOnMainThread:@selector(notificationReceived) withObject:pushHandler waitUntilDone:NO];
   }
-  completionHandler();
 }
 #endif
 
@@ -142,7 +150,7 @@ static char launchNotificationKey;
 
 - (void)dealloc
 {
-  self.launchNotification	= nil; // clear the association and release the object
+  self.launchNotification = nil; // clear the association and release the object
 }
 
 @end

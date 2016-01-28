@@ -41,6 +41,7 @@
 @property (nonatomic, copy) NSString *callback;
 
 @property (nonatomic, strong) NSDictionary *notificationMessage;
+@property (nonatomic, strong) NSMutableDictionary *params;
 @property BOOL                          isInline;
 
 - (void)register:(CDVInvokedUrlCommand*)command;

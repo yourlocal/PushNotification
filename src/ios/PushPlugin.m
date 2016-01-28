@@ -28,6 +28,7 @@
 @implementation PushPlugin
 
 @synthesize notificationMessage;
+@synthesize params;
 @synthesize isInline;
 
 @synthesize callbackId;
@@ -342,34 +343,6 @@
   [self failWithMessage:@"" withError:error];
 }
 
-- (void)notificationReceived {
-  NSLog(@"Notification received");
-  
-  if (notificationMessage && self.callback)
-  {
-    NSMutableString *jsonStr = [NSMutableString stringWithString:@"{"];
-    
-    [self parseDictionary:notificationMessage intoJSON:jsonStr];
-    
-    if (isInline)
-    {
-      [jsonStr appendFormat:@"foreground:\"%d\"", 1];
-      isInline = NO;
-    }
-    else
-      [jsonStr appendFormat:@"foreground:\"%d\"", 0];
-    
-    [jsonStr appendString:@"}"];
-    
-    NSLog(@"Msg: %@", jsonStr);
-    
-    NSString * jsCallBack = [NSString stringWithFormat:@"%@(%@);", self.callback, jsonStr];
-    [self.webView stringByEvaluatingJavaScriptFromString:jsCallBack];
-    
-    self.notificationMessage = nil;
-  }
-}
-
 // reentrant method to drill down and surface all sub-dictionaries' key/value pairs into the top level json
 -(void)parseDictionary:(NSDictionary *)inDictionary intoJSON:(NSMutableString *)jsonString
 {
@@ -421,6 +394,68 @@
   CDVPluginResult *commandResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:errorMessage];
   
   [self.commandDelegate sendPluginResult:commandResult callbackId:self.callbackId];
+}
+
+- (void)notificationReceived {
+  NSLog(@"Notification received");
+  
+  if (notificationMessage && self.callback)
+  {
+    NSMutableString *jsonStr = [NSMutableString stringWithString:@"{"];
+    
+    [self parseDictionary:notificationMessage intoJSON:jsonStr];
+    
+    if (isInline)
+    {
+      [jsonStr appendFormat:@"foreground:\"%d\"", 1];
+      isInline = NO;
+    }
+    else
+      [jsonStr appendFormat:@"foreground:\"%d\"", 0];
+    
+    [jsonStr appendString:@"}"];
+    
+    NSLog(@"Msg: %@", jsonStr);
+    
+    NSString * jsCallBack = [NSString stringWithFormat:@"%@(%@);", self.callback, jsonStr];
+    [self.webView performSelectorOnMainThread:@selector(stringByEvaluatingJavaScriptFromString:) withObject:jsCallBack waitUntilDone:NO];
+    
+    self.notificationMessage = nil;
+  }
+}
+
+-(void) notificationProcessed:(CDVInvokedUrlCommand*)command
+{
+    NSLog(@"Push Plugin finish called");
+
+    [self.commandDelegate runInBackground:^ {
+        UIApplication *app = [UIApplication sharedApplication];
+        float finishTimer = (app.backgroundTimeRemaining > 20.0) ? 20.0 : app.backgroundTimeRemaining;
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [NSTimer scheduledTimerWithTimeInterval:finishTimer
+                                       target:self
+                                       selector:@selector(stopBackgroundTask:)
+                                       userInfo:nil
+                                       repeats:NO];
+        });
+    }];
+}
+
+-(void)stopBackgroundTask:(NSTimer*)timer
+{
+    UIApplication *app = [UIApplication sharedApplication];
+
+    NSLog(@"Push Plugin stopBackgroundTask called");
+
+    if (self.params) {
+        void (^_completionHandler)() = self.params[@"handler"];
+        if (_completionHandler) {
+            NSLog(@"Push Plugin: stopBackgroundTask (remaining t: %f)", app.backgroundTimeRemaining);
+            _completionHandler();
+            _completionHandler = nil;
+        }
+    }
 }
 
 @end

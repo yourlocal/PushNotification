@@ -110,6 +110,11 @@ PushNotification.prototype.setApplicationIconBadgeNumber = function(successCallb
     cordova.exec(successCallback, errorCallback, "PushPlugin", "setApplicationIconBadgeNumber", [{badge: badge}]);
 };
 
+// Call this to notifiy iOS native code that the push notification was processed
+PushNotification.prototype.notificationProcessed = function() {
+    cordova.exec({}, {}, "PushPlugin", "notificationProcessed");
+};
+
 //-------------------------------------------------------------------
 
 if(!window.plugins) {
