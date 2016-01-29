@@ -175,6 +175,13 @@
     // Set whether the action requires the user to authenticate
     BOOL isAuthRequired = [[action objectForKey:@"authenticationRequired"] isEqual:[NSNumber numberWithBool:YES]];
     nsAction.authenticationRequired = isAuthRequired;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 90000
+    // Check if the action is actually a text input
+    BOOL isTextInput = [@"textInput" isEqualToString:[action objectForKey:@"behavior"]];
+    if(isTextInput){
+        nsAction.behavior = UIUserNotificationActionBehaviorTextInput;
+    }
+#endif
     [nsActions addObject:nsAction];
   }
   return YES;
@@ -414,9 +421,7 @@
       [jsonStr appendFormat:@"foreground:\"%d\"", 0];
     
     [jsonStr appendString:@"}"];
-    
-    NSLog(@"Msg: %@", jsonStr);
-    
+        
     NSString * jsCallBack = [NSString stringWithFormat:@"%@(%@);", self.callback, jsonStr];
     [self.webView performSelectorOnMainThread:@selector(stringByEvaluatingJavaScriptFromString:) withObject:jsCallBack waitUntilDone:NO];
     
@@ -445,13 +450,19 @@
 {
     UIApplication *app = [UIApplication sharedApplication];
 
-    NSLog(@"Push Plugin stopBackgroundTask called");
-
     if (self.params) {
-        _completionHandler = [self.params[@"handler"] copy];
-        if (_completionHandler) {
-            _completionHandler();
-            _completionHandler = nil;
+        remoteNotificationHandler = [self.params[@"remoteNotificationHandler"] copy];
+        if (remoteNotificationHandler) {
+            remoteNotificationHandler();
+            NSLog(@"remoteNotificationHandler called");
+            remoteNotificationHandler = nil;
+        }
+
+        silentNotificationHandler = [self.params[@"silentNotificationHandler"] copy];
+        if (silentNotificationHandler) {
+            silentNotificationHandler(UIBackgroundFetchResultNewData);
+            NSLog(@"silentNotificationHandler called");
+            silentNotificationHandler = nil;
         }
     }
 }

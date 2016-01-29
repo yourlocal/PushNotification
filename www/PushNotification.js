@@ -30,6 +30,10 @@ PushNotification.prototype.UserNotificationActivationMode = {
     Background : "background"
 };
 
+PushNotification.prototype.ActionBehavior = {
+    TextInput : "textInput"
+};
+
 PushNotification.prototype.registerUserNotificationSettings = function(successCallback, errorCallback, options) {
     if (errorCallback == null) { errorCallback = function() {}}
 

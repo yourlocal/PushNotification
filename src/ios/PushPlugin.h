@@ -34,7 +34,8 @@
     BOOL    isInline;
     NSString *notificationCallbackId;
     NSString *callback;
-    void (^_completionHandler)();
+    void (^remoteNotificationHandler)();
+    void (^silentNotificationHandler)(UIBackgroundFetchResult);
     BOOL ready;
 }
 
