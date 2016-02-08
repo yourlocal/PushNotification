@@ -104,7 +104,7 @@ For further information you can take a look into the Backend Services hybrid pus
       	var replyAction = {
         	identifier: 'REPLY_IDENTIFIER',
         	title: 'Reply', 
-        	activationMode: pushPlugin.UserNotificationActivationMode.Background,
+        	activationMode: window.plugins.pushNotification.UserNotificationActivationMode.Background,
         	destructive: false,
         	authenticationRequired: true,
 			behavior: window.plugins.pushNotification.ActionBehavior.TextInput
