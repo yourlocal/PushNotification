@@ -124,7 +124,7 @@ static char launchNotificationKey;
     [pushHandler notificationReceived];
 }
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 90000
 // this method is invoked when:
 // - one of the buttons of an interactive notification is tapped
 // see https://developer.apple.com/library/mac/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/IPhoneOSClientImp.html#//apple_ref/doc/uid/TP40008194-CH103-SW1
@@ -138,6 +138,35 @@ static char launchNotificationKey;
     [mutableNotification setValue:textInput forKey:@"textInput"];
   }
   
+  NSLog(@"handleActionWithIdentifier");
+  if (application.applicationState == UIApplicationStateActive) {
+    PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];
+    pushHandler.notificationMessage = mutableNotification;
+    pushHandler.isInline = YES;
+    [pushHandler notificationReceived];
+  } else {
+    void (^safeHandler)() = ^(void){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler();
+        });
+    };
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithCapacity:2];
+    [params setObject:safeHandler forKey:@"remoteNotificationHandler"];
+    PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];    
+    pushHandler.notificationMessage = mutableNotification;    
+    pushHandler.params= params;  
+    [pushHandler notificationReceived];
+  }
+}
+#elif __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+// this method is invoked when:
+// - one of the buttons of an interactive notification is tapped
+// see https://developer.apple.com/library/mac/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/IPhoneOSClientImp.html#//apple_ref/doc/uid/TP40008194-CH103-SW1
+- (void)application:(UIApplication *) application handleActionWithIdentifier: (NSString *) identifier forRemoteNotification: (NSDictionary *) notification completionHandler: (void (^)()) completionHandler {
+
+  NSMutableDictionary *mutableNotification = [notification mutableCopy];
+  [mutableNotification setObject:identifier forKey:@"identifier"];  
+    
   NSLog(@"handleActionWithIdentifier");
   if (application.applicationState == UIApplicationStateActive) {
     PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];
