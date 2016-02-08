@@ -175,13 +175,13 @@
     // Set whether the action requires the user to authenticate
     BOOL isAuthRequired = [[action objectForKey:@"authenticationRequired"] isEqual:[NSNumber numberWithBool:YES]];
     nsAction.authenticationRequired = isAuthRequired;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 90000
-    // Check if the action is actually a text input
+
+    // Check if the action is actually a text input and behavior is supported
     BOOL isTextInput = [@"textInput" isEqualToString:[action objectForKey:@"behavior"]];
-    if(isTextInput){
+    if(isTextInput && [nsAction respondsToSelector:NSSelectorFromString(@"setBehvaior")]){
         nsAction.behavior = UIUserNotificationActionBehaviorTextInput;
     }
-#endif
+
     [nsActions addObject:nsAction];
   }
   return YES;
