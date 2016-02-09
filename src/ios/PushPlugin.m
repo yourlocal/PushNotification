@@ -178,7 +178,7 @@
 
     // Check if the action is actually a text input and behavior is supported
     BOOL isTextInput = [@"textInput" isEqualToString:[action objectForKey:@"behavior"]];
-    if(isTextInput && [nsAction respondsToSelector:NSSelectorFromString(@"setBehvaior")]){
+    if(isTextInput && [nsAction respondsToSelector:NSSelectorFromString(@"setBehavior:")]){
         nsAction.behavior = UIUserNotificationActionBehaviorTextInput;
     }
 
