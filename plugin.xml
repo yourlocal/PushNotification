@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
 				xmlns:android="http://schemas.android.com/apk/res/android"
 				id="com.phonegap.plugins.PushPlugin"
-				version="3.0.6">
+				version="3.1.0">
 
 	<name>PushPlugin</name>
 
@@ -80,7 +80,7 @@
 			<feature name="PushPlugin">
 				<param name="ios-package" value="PushPlugin"/>
 			</feature>
-		</config-file>
+		</config-file>       
 
 		<source-file src="src/ios/AppDelegate+notification.m"/>
 		<source-file src="src/ios/PushPlugin.m"/>

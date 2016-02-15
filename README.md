@@ -30,7 +30,7 @@ For further information you can take a look into the Backend Services hybrid pus
 		pushNotification.unregister(successHandler, errorHandler, options);
 
 		
-- iOS 8 interactive push notifications support (available from v.2.5 and above)
+- iOS 8 interactive push notifications support (available from v2.5 and above)
   
         // Get the push plugin instance
 		var pushPlugin = window.plugins.pushNotification;
@@ -97,6 +97,24 @@ For further information you can take a look into the Backend Services hybrid pus
           	}
       	);
             
+
+- iOS 9 text input support (available from v3.1 and above)
+
+		// Define a Text Input Action
+      	var replyAction = {
+        	identifier: 'REPLY_IDENTIFIER',
+        	title: 'Reply', 
+        	activationMode: window.plugins.pushNotification.UserNotificationActivationMode.Background,
+        	destructive: false,
+        	authenticationRequired: true,
+		behavior: window.plugins.pushNotification.ActionBehavior.TextInput
+      	};
+
+- **IMPORTANT**: When using interactive iOS push notifications with background activation mode, you **must** call the following function, once you are done processing the push notification object:
+
+		pushPlugin.notificationProcessed()
+ This way you'll be able to execute your javascript callback and then notify the operating system to put back your app in background, which is the correct approach to handle such notifications by iOS.  
+
 
 - Set an application icon badge number (iOS only)
 
