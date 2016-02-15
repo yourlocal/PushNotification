@@ -110,15 +110,7 @@ For further information you can take a look into the Backend Services hybrid pus
 			behavior: window.plugins.pushNotification.ActionBehavior.TextInput
       	};
 
-- iOS silent/content-available push notifications (available from v3.1 and above) - in order to use that kind of push notifiations, add the following snippet to the <platform name=ios> section in the plugin.xml file:
-		
-		<config-file target="*-Info.plist" parent="UIBackgroundModes">
-            <array>
-                <string>remote-notification</string>
-            </array>
-        </config-file>
-
-- **IMPORTANT**: When using interactive iOS push notifications with background activation mode or iOS silent push notifications, you **must** call the following function, once you are done processing the push notification object:
+- **IMPORTANT**: When using interactive iOS push notifications with background activation mode, you **must** call the following function, once you are done processing the push notification object:
 
 		pushPlugin.notificationProcessed()
  This way you'll be able to execute your javascript callback and then notify the operating system to put back your app in background, which is the correct approach to handle such notifications by iOS.  
