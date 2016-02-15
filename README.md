@@ -104,10 +104,10 @@ For further information you can take a look into the Backend Services hybrid pus
       	var replyAction = {
         	identifier: 'REPLY_IDENTIFIER',
         	title: 'Reply', 
-        	activationMode: pushPlugin.UserNotificationActivationMode.Background,
+        	activationMode: window.plugins.pushNotification.UserNotificationActivationMode.Background,
         	destructive: false,
         	authenticationRequired: true,
-			behavior: window.plugins.pushNotification.ActionBehavior.TextInput
+		behavior: window.plugins.pushNotification.ActionBehavior.TextInput
       	};
 
 - **IMPORTANT**: When using interactive iOS push notifications with background activation mode, you **must** call the following function, once you are done processing the push notification object:
