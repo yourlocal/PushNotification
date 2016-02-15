@@ -103,26 +103,48 @@ static char launchNotificationKey;
   }
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void(^)(UIBackgroundFetchResult result))completionHandler
+/*- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void(^)(UIBackgroundFetchResult result))completionHandler
 {
     NSLog(@"didReceiveRemoteNotification with fetchCompletionHandler");  
 
-    void (^safeHandler)(UIBackgroundFetchResult) = ^(UIBackgroundFetchResult result){
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(result);
-        });
-    };
+    if (application.applicationState == UIApplicationStateActive) {
+        PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];
+        pushHandler.notificationMessage = userInfo;
+        pushHandler.isInline = YES;
+        [pushHandler notificationReceived];
+        completionHandler(UIBackgroundFetchResultNewData);
+    } 
+    else {
+        long silent = 0;
+        id aps = [userInfo objectForKey:@"aps"];
+        id contentAvailable = [aps objectForKey:@"content-available"];
+        if ([contentAvailable isKindOfClass:[NSString class]] && [contentAvailable isEqualToString:@"1"]) {
+            silent = 1;
+        } else if ([contentAvailable isKindOfClass:[NSNumber class]]) {
+            silent = [contentAvailable integerValue];
+        }
+        
+        if (silent == 1) {
+            void (^safeHandler)(UIBackgroundFetchResult) = ^(UIBackgroundFetchResult result){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(result);
+                });
+            };
 
-    NSMutableDictionary *mutableNotification = [userInfo mutableCopy];
-
-    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithCapacity:2];
-    [params setObject:safeHandler forKey:@"silentNotificationHandler"];
-
-    PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];    
-    pushHandler.notificationMessage = mutableNotification;    
-    pushHandler.params= params;  
-    [pushHandler notificationReceived];
-}
+            NSMutableDictionary *mutableNotification = [userInfo mutableCopy];
+            NSMutableDictionary* params = [NSMutableDictionary dictionaryWithCapacity:2];
+            [params setObject:safeHandler forKey:@"silentNotificationHandler"];
+            PushPlugin *pushHandler = [self getCommandInstance:@"PushPlugin"];    
+            pushHandler.notificationMessage = mutableNotification;    
+            pushHandler.params= params;  
+            [pushHandler notificationReceived];
+        } else {
+            self.launchNotification = userInfo;
+            completionHandler(UIBackgroundFetchResultNewData);
+        }
+    }
+    
+}*/
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 90000
 // this method is invoked when:
