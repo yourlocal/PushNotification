@@ -51,8 +51,7 @@ namespace WPCordovaClassLib.Cordova.Commands
             if (pushChannel.ChannelUri == null)
             {
                 // Wait for the channel to become ready.
-                // Need to respond with OK instead of NO_RESULT because of https://issues.apache.org/jira/browse/CB-8580
-                PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+                PluginResult pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
                 pluginResult.KeepCallback = true;
                 this.DispatchCommandResult(pluginResult, this.CurrentCommandCallbackId);
             }
