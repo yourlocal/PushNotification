@@ -89,7 +89,7 @@ static char launchNotificationKey;
 // this method is invoked when:
 // - a regular notification is tapped
 // - an interactive notification is tapped, but not one of its buttons
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+/*- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
   NSLog(@"didReceiveNotification");
   
   if (application.applicationState == UIApplicationStateActive) {
@@ -101,9 +101,9 @@ static char launchNotificationKey;
     //save it for later
     self.launchNotification = userInfo;
   }
-}
+}*/
 
-/*- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void(^)(UIBackgroundFetchResult result))completionHandler
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void(^)(UIBackgroundFetchResult result))completionHandler
 {
     NSLog(@"didReceiveRemoteNotification with fetchCompletionHandler");  
 
@@ -144,7 +144,7 @@ static char launchNotificationKey;
         }
     }
     
-}*/
+}
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 90000
 // this method is invoked when:
