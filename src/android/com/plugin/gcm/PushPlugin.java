@@ -171,6 +171,7 @@ public class PushPlugin extends CordovaPlugin {
 				callbackContext[0].success(regid);
 			} catch (Exception ex) {
 				Log.d(TAG, "Got Exception on registerInBackground", ex);
+				callbackContext[0].error(ex.getMessage());
 			}
 			return null;
 		}
