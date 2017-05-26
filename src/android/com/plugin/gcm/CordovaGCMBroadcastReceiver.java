@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -141,7 +143,8 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 		final Notification notification = mBuilder.build();
 		final int largeIcon = getLargeIcon(context, extras);
 		if (largeIcon > -1) {
-			notification.contentView.setImageViewResource(android.R.id.icon, largeIcon);
+			final Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), largeIcon);
+			mBuilder.setLargeIcon(bitmap);
 		}
 
 		mNotificationManager.notify(appName, notId, notification);
