@@ -140,13 +140,13 @@ public class CordovaGCMBroadcastReceiver extends WakefulBroadcastReceiver {
 			mBuilder.setDefaults(defaults);
 		}
 
-		final Notification notification = mBuilder.build();
 		final int largeIcon = getLargeIcon(context, extras);
 		if (largeIcon > -1) {
 			final Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), largeIcon);
 			mBuilder.setLargeIcon(bitmap);
 		}
-
+		
+		final Notification notification = mBuilder.build();
 		mNotificationManager.notify(appName, notId, notification);
 	}
 
