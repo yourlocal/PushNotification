@@ -49,6 +49,7 @@
 
 - (void)register:(CDVInvokedUrlCommand*)command;
 - (void)registerUserNotificationSettings:(CDVInvokedUrlCommand*)command;
+- (void)didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings;
 
 - (void)areNotificationsEnabled:(CDVInvokedUrlCommand*)command;
 

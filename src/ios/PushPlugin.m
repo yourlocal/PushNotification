@@ -288,6 +288,15 @@
  NSLog(@"JSStatement %@",jsStatement);
  }
  */
+ 
+ - (void)didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+{
+   // Check if the user has chosen not to recieve notifications for this app
+   if(notificationSettings.types == UIUserNotificationTypeNone)
+   {
+    [self failWithMessage:@"User did not allow notification messages for this app" withError:nil];
+   }
+}
 
 - (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
   
