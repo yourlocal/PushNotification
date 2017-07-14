@@ -1,3 +1,5 @@
+This YourLocal fork, contains a fix for receieving notifications on Android.
+
 # Telerik Push Notifications Plugin
 
 ## Description
